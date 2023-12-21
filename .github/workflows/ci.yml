@@ -7,14 +7,17 @@ on:
 jobs:
   test:
     strategy:
-      fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
         java-version: [17]
         mappings: [mojmap, yarn]
+      fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: fregante/setup-git-user@v2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -22,17 +25,16 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ matrix.java-version }}
-     
-      - name: Set up Nox
+
+      - name: Install Nox
         run: pip install nox
 
       - name: Copy template
         run: nox -s ctt
-      
-      - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2
+
+      - uses: gradle/gradle-build-action@v2
         with:
           build-root-directory: .ctt/${{ matrix.mappings }}
 
-      - name: Run Nox sessions
+      - name: Run tests
         run: nox -k ${{ matrix.mappings }}
