@@ -7,6 +7,8 @@ from typing import Any
 
 import nox
 
+GIT_USER = "GitHub Actions"
+GIT_EMAIL = "41898282+github-actions[bot]@users.noreply.github.com"
 MAPPINGS_NAMES = [
     "mojmap",
     "yarn",
@@ -46,14 +48,10 @@ def setup(session: nox.Session, output_dir: Path):
 
     session.install("copier")
 
-    silent = not is_ci()
+    session.run("git", "config", "user.name", GIT_USER, external=True)
+    session.run("git", "config", "user.email", GIT_EMAIL, external=True)
 
-    session.run(
-        "git",
-        "init",
-        external=True,
-        silent=silent,
-    )
+    session.run("git", "init", external=True)
 
     session.run(
         "git",
@@ -62,7 +60,6 @@ def setup(session: nox.Session, output_dir: Path):
         "-m",
         "Initial commit",
         external=True,
-        silent=silent,
     )
 
     session.run(
@@ -75,7 +72,6 @@ def setup(session: nox.Session, output_dir: Path):
         "--skip",
         ".gitignore",
         "--defaults",
-        silent=silent,
     )
 
 
