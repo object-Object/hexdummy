@@ -7,8 +7,12 @@ from typing import Any
 
 import nox
 
-GIT_USER = "GitHub Actions"
-GIT_EMAIL = "41898282+github-actions[bot]@users.noreply.github.com"
+CI_GIT_CONFIGS = {
+    "user.name": "GitHub Actions",
+    "user.email": "41898282+github-actions[bot]@users.noreply.github.com",
+    "init.defaultBranch": "main",
+}
+
 MAPPINGS_NAMES = [
     "mojmap",
     "yarn",
@@ -49,8 +53,8 @@ def setup(session: nox.Session, output_dir: Path):
     session.install("copier")
 
     if is_ci():
-        session.run("git", "config", "--global", "user.name", GIT_USER, external=True)
-        session.run("git", "config", "--global", "user.email", GIT_EMAIL, external=True)
+        for key, value in CI_GIT_CONFIGS.items():
+            session.run("git", "config", "--global", key, value, external=True)
 
     session.run("git", "init", external=True)
 
@@ -81,7 +85,7 @@ def setup(session: nox.Session, output_dir: Path):
 def gradle_build(session: nox.Session, output_dir: Path):
     session.chdir(output_dir)
 
-    session.run(gradle(), "build")
+    session.run(gradle(), "build", external=True)
 
 
 @nox.session
