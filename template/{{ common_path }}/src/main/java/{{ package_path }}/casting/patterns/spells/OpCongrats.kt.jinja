@@ -65,7 +65,7 @@ class OpCongrats : SpellAction {
      */
     private data class Spell(val player: {{ ServerPlayer }}) : RenderedSpell {
         override fun cast(ctx: CastingContext) {
-            ctx.caster.{{ _(mojmap="sendMessage", yarn="sendSystemMessage") }}({{ Component }}.translatable("text.{{ modid }}.congrats", player.displayName));
+            ctx.caster.{{ _(mojmap="sendSystemMessage", yarn="sendMessage") }}({{ Component }}.translatable("text.{{ modid }}.congrats", player.displayName));
         }
     }
 }
