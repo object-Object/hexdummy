@@ -81,14 +81,20 @@ capitalize_platforms:
   help: Capitalize platform directory names? (eg. Common vs common)
   default: false
 
-mappings:
+mappings_name:
   type: str
   choices:
-    Mojmap: 'loom.officialMojangMappings()'
-    Yarn: &mappings_default '"net.fabricmc:yarn:1.19.2+build.28:v2"'
-  default: *mappings_default
+    - Mojmap
+    - Yarn
+  default: Yarn
 
 # static/computed values
+
+mappings_values:
+  when: false
+  default:
+    Mojmap: 'loom.officialMojangMappings()'
+    Yarn: '"net.fabricmc:yarn:1.19.2+build.28:v2"'
 
 common_path:
   when: false

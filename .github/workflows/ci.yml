@@ -1,0 +1,38 @@
+name: Run tests
+
+on:
+  push:
+    branches: '*'
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        java-version: [17]
+        mappings: [mojmap, yarn]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java-version }}
+     
+      - name: Set up Nox
+        run: pip install nox
+
+      - name: Copy template
+        run: nox -s ctt
+      
+      - name: Set up Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          build-root-directory: .ctt/${{ matrix.mappings }}
+
+      - name: Run Nox sessions
+        run: nox -k ${{ matrix.mappings }}

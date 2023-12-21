@@ -1,4 +1,23 @@
 {
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit"
+        },
+        "editor.rulers": [88],
+    },
+    "[yaml][html][css][javascript][jinja-html][jinja-css][jinja-js]": {
+        "editor.tabSize": 2,
+    },
+    "ruff.organizeImports": true,
+    "ruff.lint.args": [
+        "--extend-ignore=I",
+    ],
+    "python.languageServer": "Pylance",
+    "python.analysis.diagnosticMode": "workspace",
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
     "files.associations": {
         "*.css.jinja": "jinja-css",
         "*.gradle.jinja": "jinja-groovy",

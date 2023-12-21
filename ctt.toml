@@ -6,4 +6,8 @@ author = "artynova"
 classname = "HexDummy"
 display_name = "Hex Dummy"
 
-[output.".ctt/defaults"]
+[output.".ctt/mojmap"]
+mappings_name = "Mojmap"
+
+[output.".ctt/yarn"]
+mappings_name = "Yarn"
