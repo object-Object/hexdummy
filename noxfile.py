@@ -85,7 +85,7 @@ def setup(session: nox.Session, output_dir: Path):
 def gradle_build(session: nox.Session, output_dir: Path):
     session.chdir(output_dir)
 
-    session.run(gradle(), "build", external=True)
+    session.run(*gradle(), "build", external=True)
 
 
 @nox.session
@@ -114,9 +114,9 @@ def is_ci():
     return os.getenv("CI") == "true"
 
 
-def gradle():
+def gradle() -> list[str]:
     match platform.system():
         case "Windows":
-            return ".\\gradlew.bat"
+            return [".\\gradlew.bat"]
         case _:
-            return "./gradlew"
+            return ["sh", "./gradlew"]
