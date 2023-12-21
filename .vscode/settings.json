@@ -6,5 +6,6 @@
         "*.kt.jinja": "jinja-groovy",
         "*.mcmeta.jinja": "jinja-json",
         "*.properties.jinja": "jinja-properties",
+        "*_copier_conf.answers_file*.jinja": "jinja-yaml",
     },
 }
