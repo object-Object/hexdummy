@@ -48,8 +48,9 @@ def setup(session: nox.Session, output_dir: Path):
 
     session.install("copier")
 
-    session.run("git", "config", "user.name", GIT_USER, external=True)
-    session.run("git", "config", "user.email", GIT_EMAIL, external=True)
+    if is_ci():
+        session.run("git", "config", "--global", "user.name", GIT_USER, external=True)
+        session.run("git", "config", "--global", "user.email", GIT_EMAIL, external=True)
 
     session.run("git", "init", external=True)
 
