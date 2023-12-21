@@ -13,6 +13,7 @@ MAPPINGS_NAMES = [
 ]
 
 nox.options.reuse_existing_virtualenvs = True
+nox.options.stop_on_first_error = True
 
 
 def parametrize_output_dir():
@@ -78,9 +79,17 @@ def setup(session: nox.Session, output_dir: Path):
     )
 
 
+@nox.session(python=False)
+@parametrize_output_dir()
+def gradle_build(session: nox.Session, output_dir: Path):
+    session.chdir(output_dir)
+
+    session.run(gradle(), "build")
+
+
 @nox.session
 @parametrize_output_dir()
-def book(session: nox.Session, output_dir: Path):
+def hexdoc(session: nox.Session, output_dir: Path):
     session.chdir(output_dir)
 
     session.install(".")
@@ -88,14 +97,6 @@ def book(session: nox.Session, output_dir: Path):
 
     session.run("hexdoc", "build")
     session.run("hexdoc", "merge")
-
-
-@nox.session(python=False)
-@parametrize_output_dir()
-def gradle_build(session: nox.Session, output_dir: Path):
-    session.chdir(output_dir)
-
-    session.run(gradle(), "build")
 
 
 # helpers
