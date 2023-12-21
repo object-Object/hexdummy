@@ -1,0 +1,16 @@
+{% macro mappings(mojmap, yarn) -%}
+  {%- if mappings_name == "Mojmap" -%}
+    {{ mojmap }}
+  {%- elif mappings_name == "Yarn" -%}
+    {{ yarn }}
+  {%- else -%}
+    {% include "error: unhandled mapping `"~mappings_name~"`" %}
+  {%- endif -%}
+{%- endmacro %}
+
+{% set ns = namespace() %}
+
+{% macro import(mojmap, yarn) -%}
+  {%- set ns.import = mappings(mojmap=mojmap, yarn=yarn).split(".")|last -%}
+  import {{ mappings(mojmap, yarn) }}
+{%- endmacro %}

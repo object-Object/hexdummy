@@ -1,29 +1,34 @@
+{% from "macros/mappings.jinja" import mappings as _, import, ns with context -%}
+
 package {{ package }}.registry;
 
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import {{ package }}.{{ classname }};
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.registry.Registry;
+import net.minecraft{{ _(mojmap=".world", yarn="") }}.item.Item;
+{{ import(
+    mojmap="net.minecraft.world.item.CreativeModeTab",
+    yarn="net.minecraft.item.ItemGroup",
+) }}{% set CreativeModeTab = ns.import %}
+import net.minecraft{{ _(mojmap=".world", yarn="") }}.item.ItemStack;
+import net.minecraft.{{ _(mojmap="core", yarn="util.registry") }}.Registry;
 
 import static {{ package }}.{{ classname }}.id;
 
 public class {{ classname }}ItemRegistry {
     // Register items through this
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create({{ classname }}.MOD_ID, Registry.ITEM_KEY);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create({{ classname }}.MOD_ID, Registry.ITEM_{{ _(mojmap="REGISTRY", yarn="KEY") }});
 
     public static void init() {
         ITEMS.register();
     }
 
     // A new creative tab. Notice how it is one of the few things that are not deferred
-    public static final ItemGroup DUMMY_GROUP = CreativeTabRegistry.create(id("dummy_group"), () -> new ItemStack({{ classname }}ItemRegistry.DUMMY_ITEM.get()));
+    public static final {{ CreativeModeTab }} DUMMY_GROUP = CreativeTabRegistry.create(id("dummy_group"), () -> new ItemStack({{ classname }}ItemRegistry.DUMMY_ITEM.get()));
 
     // During the loading phase, refrain from accessing suppliers' items (e.g. EXAMPLE_ITEM.get()), they will not be available
-    public static final RegistrySupplier<Item> DUMMY_ITEM = ITEMS.register("dummy_item", () -> new Item(new Item.Settings().group(DUMMY_GROUP)));
+    public static final RegistrySupplier<Item> DUMMY_ITEM = ITEMS.register("dummy_item", () -> new Item(new Item.{{ _(mojmap="Properties().tab", yarn="Settings().group") }}(DUMMY_GROUP)));
 
 
 }

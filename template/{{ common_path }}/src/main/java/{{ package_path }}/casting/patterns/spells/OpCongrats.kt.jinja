@@ -1,3 +1,5 @@
+{% from "macros/mappings.jinja" import mappings as _, import, ns with context -%}
+
 package {{ package }}.casting.patterns.spells
 
 import at.petrak.hexcasting.api.misc.MediaConstants
@@ -8,8 +10,14 @@ import at.petrak.hexcasting.api.spell.casting.CastingContext
 import at.petrak.hexcasting.api.spell.getEntity
 import at.petrak.hexcasting.api.spell.iota.Iota
 import at.petrak.hexcasting.api.spell.mishaps.MishapBadEntity
-import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.Text
+{{ import(
+    mojmap="net.minecraft.server.level.ServerPlayer",
+    yarn="net.minecraft.server.network.ServerPlayerEntity",
+) }}{% set ServerPlayer = ns.import %}
+{{ import(
+    mojmap="net.minecraft.network.chat.Component",
+    yarn="net.minecraft.text.Text",
+) }}{% set Component = ns.import %}
 
 class OpCongrats : SpellAction {
     /**
@@ -38,15 +46,15 @@ class OpCongrats : SpellAction {
         // the caster is allowed to affect.
         ctx.assertEntityInRange(target)
 
-        if (target !is ServerPlayerEntity) throw MishapBadEntity(
+        if (target !is {{ ServerPlayer }}) throw MishapBadEntity(
             target,
-            Text.translatable("text.{{ modid }}.congrats.player")
+            {{ Component }}.translatable("text.{{ modid }}.congrats.player")
         )
 
         return Triple(
             Spell(target),
             cost,
-            listOf(ParticleSpray.burst(target.pos, 1.0))
+            listOf(ParticleSpray.burst(target.{{ _(mojmap="position()", yarn="pos") }}, 1.0))
         )
     }
 
@@ -55,9 +63,9 @@ class OpCongrats : SpellAction {
      * define where/what it should affect (for this example the parameter is [player]), and the
      * [cast] method within is responsible for using that data to alter the world.
      */
-    private data class Spell(val player: ServerPlayerEntity) : RenderedSpell {
+    private data class Spell(val player: {{ ServerPlayer }}) : RenderedSpell {
         override fun cast(ctx: CastingContext) {
-            ctx.caster.sendMessage(Text.translatable("text.{{ modid }}.congrats", player.displayName));
+            ctx.caster.{{ _(mojmap="sendMessage", yarn="sendSystemMessage") }}({{ Component }}.translatable("text.{{ modid }}.congrats", player.displayName));
         }
     }
 }

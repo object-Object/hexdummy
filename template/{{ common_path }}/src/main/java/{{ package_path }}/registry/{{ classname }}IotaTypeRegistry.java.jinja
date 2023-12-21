@@ -1,10 +1,15 @@
+{% from "macros/mappings.jinja" import mappings as _, import, ns with context -%}
+
 package {{ package }}.registry;
 
 import at.petrak.hexcasting.api.spell.iota.Iota;
 import at.petrak.hexcasting.api.spell.iota.IotaType;
 import at.petrak.hexcasting.common.lib.hex.HexIotaTypes;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+{{ import(
+    mojmap="net.minecraft.resources.ResourceLocation",
+    yarn="net.minecraft.util.Identifier",
+) }}{% set ResourceLocation = ns.import %};
+import net.minecraft.{{ _(mojmap="core", yarn="util.registry") }}.Registry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,10 +17,10 @@ import java.util.Map;
 import static {{ package }}.{{ classname }}.id;
 
 public class {{ classname }}IotaTypeRegistry {
-    public static Map<Identifier, IotaType<?>> TYPES = new HashMap<>();
+    public static Map<{{ ResourceLocation }}, IotaType<?>> TYPES = new HashMap<>();
 
     public static void init() {
-        for (Map.Entry<Identifier, IotaType<?>> entry : TYPES.entrySet()) {
+        for (Map.Entry<{{ ResourceLocation }}, IotaType<?>> entry : TYPES.entrySet()) {
             Registry.register(HexIotaTypes.REGISTRY, entry.getKey(), entry.getValue());
         }
     }

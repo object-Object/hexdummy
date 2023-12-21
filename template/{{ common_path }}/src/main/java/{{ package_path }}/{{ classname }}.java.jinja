@@ -1,9 +1,14 @@
+{% from "macros/mappings.jinja" import mappings as _, import, ns with context -%}
+
 package {{ package }};
 
 import {{ package }}.registry.{{ classname }}IotaTypeRegistry;
 import {{ package }}.registry.{{ classname }}ItemRegistry;
 import {{ package }}.registry.{{ classname }}PatternRegistry;
-import net.minecraft.util.Identifier;
+{{ import(
+    mojmap="net.minecraft.resources.ResourceLocation",
+    yarn="net.minecraft.util.Identifier",
+) }}{% set ResourceLocation = ns.import %};
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,7 +34,7 @@ public class {{ classname }} {
     /**
      * Shortcut for identifiers specific to this mod.
      */
-    public static Identifier id(String string) {
-        return new Identifier(MOD_ID, string);
+    public static {{ ResourceLocation }} id(String string) {
+        return new {{ ResourceLocation }}(MOD_ID, string);
     }
 }
