@@ -13,7 +13,7 @@ from [Architectury templates](https://github.com/architectury/architectury-templ
 
 1. Install Python 3.11+, then follow [these instructions](https://pypa.github.io/pipx/#install-pipx) to install pipx.
    * pipx is basically like Node's `npx` but for Python - it's a tool to help you install and run end-user applications written in Python.
-2. Create, clone, and enter a new GitHub repo.
+2. Create, clone, and enter a *new* GitHub repo (**do not** fork/clone/copy this repo directly).
 3. From the repo root, run these commands to copy the template, then follow the prompts to set it up:
    ```sh
    pipx install copier
