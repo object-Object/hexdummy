@@ -145,8 +145,6 @@ ext.getLatestChangelog = {
     return changelog.trim()
 }
 
-ext.bookPath = "data/{{ modid }}/patchouli_books/{{ book_id_path }}"
-
 tasks.register("viewLatestChangelog") {
     group "documentation"
     description "Print the topmost single version section from the full CHANGELOG.md file."
