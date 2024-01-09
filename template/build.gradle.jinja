@@ -122,6 +122,25 @@ allprojects {
 
     processResources {
         exclude '.cache'
+
+        def dependencyVersions = [
+            "version": project.version,
+            "architecturyVersion": project.architecturyVersion,
+            "fabricKotlinVersion": project.fabricKotlinVersion,
+            "fabricLoaderVersion": project.fabricLoaderVersion,
+            "forgeDependencyVersion": project.forgeDependencyVersion,
+            "forgeKotlinVersion": project.forgeKotlinVersion,
+            "hexcastingVersion": project.hexcastingVersion,
+            "minecraftVersion": project.minecraftVersion,
+        ]
+
+        // for incremental builds
+        inputs.properties dependencyVersions
+
+        // expand the above variables in these files
+        filesMatching(["fabric.mod.json", "META-INF/mods.toml"]) {
+            expand dependencyVersions
+        }
     }
 
     processTestResources {

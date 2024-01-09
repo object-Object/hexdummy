@@ -57,14 +57,6 @@ dependencies {
     shadowCommon(project(path: ":{{ common_path }}", configuration: "transformProductionFabric")) { transitive false }
 }
 
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
-}
-
 shadowJar {
     exclude "architectury.common.json"
 
