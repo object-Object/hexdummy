@@ -44,6 +44,9 @@ allprojects {
     apply plugin: "architectury-plugin"
     apply plugin: "maven-publish"
 
+    // disable most javadoc warnings
+    javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+
     version = project.{{ gradle_mod_version_key }}
     group = project.mavenGroup
 
