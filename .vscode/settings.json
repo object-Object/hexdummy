@@ -27,4 +27,7 @@
         "*.properties.jinja": "jinja-properties",
         "*_copier_conf.answers_file*.jinja": "jinja-yaml",
     },
+    "git.ignoredRepositories": [
+        ".ctt/*",
+    ],
 }

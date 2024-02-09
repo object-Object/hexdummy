@@ -77,6 +77,8 @@ To test the template and web book:
 - Install Nox: `pipx install nox`
 - Run the Nox session: `nox -s book`
 
+If you get an error like `Unsupported class file major version 65` when running the tests, Gradle is trying to use the wrong version of Java (this can happen if it's too old *or* too new). As a workaround, you can set the `JAVA_HOME` environment variable. Nox will also read a file in the root of this repo called `.java_home.env` containing the path to use if it exists.
+
 ## Acknowledgements
 
 - [Petrak@](https://github.com/gamma-delta) and other Hex Casting devs, for making Hex Casting in general.
