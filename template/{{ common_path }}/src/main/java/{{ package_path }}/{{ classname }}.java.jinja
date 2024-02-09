@@ -24,6 +24,7 @@ public class {{ classname }} {
     public static void init() {
         LOGGER.info("{{ display_name }} says hello!");
 
+        {{ classname }}Abstractions.initPlatformSpecific();
         {{ classname }}ItemRegistry.init();
         {{ classname }}IotaTypeRegistry.init();
         {{ classname }}PatternRegistry.init();

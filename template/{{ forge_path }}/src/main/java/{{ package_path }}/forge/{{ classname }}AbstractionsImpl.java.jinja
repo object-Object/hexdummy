@@ -12,4 +12,8 @@ public class {{ classname }}AbstractionsImpl {
     public static Path getConfigDirectory() {
         return FMLPaths.CONFIGDIR.get();
     }
+	
+    public static void initPlatformSpecific() {
+        {{ classname }}ConfigForge.init();
+    }
 }
