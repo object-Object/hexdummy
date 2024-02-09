@@ -18,14 +18,22 @@ MAPPINGS_NAMES = [
     "yarn",
 ]
 
+CTT_DIR = Path(".ctt")
+
 nox.options.reuse_existing_virtualenvs = True
 nox.options.stop_on_first_error = True
+nox.options.sessions = [
+    "ctt",
+    "setup",
+    "gradle_build",
+    "hexdoc",
+]
 
 
 def parametrize_output_dir():
     return nox.parametrize(
         "output_dir",
-        [Path(".ctt") / name for name in MAPPINGS_NAMES],
+        [CTT_DIR / name for name in MAPPINGS_NAMES],
         ids=MAPPINGS_NAMES,
     )
 
@@ -36,12 +44,6 @@ def parametrize_output_dir():
 @nox.session
 def ctt(session: nox.Session):
     session.install("copier-template-tester")
-
-    ctt_dir = Path(".ctt")
-    if ctt_dir.is_dir():
-        session.log(f"Removing directory: {ctt_dir}")
-        shutil.rmtree(ctt_dir, onerror=on_rm_error)
-
     session.run("ctt", silent=not is_ci())
 
 
@@ -77,6 +79,7 @@ def setup(session: nox.Session, output_dir: Path):
         "--skip",
         ".gitignore",
         "--defaults",
+        "--overwrite",
     )
 
 
@@ -98,6 +101,13 @@ def hexdoc(session: nox.Session, output_dir: Path):
 
     session.run("hexdoc", "build")
     session.run("hexdoc", "merge")
+
+
+@nox.session(python=False)
+def clean(session: nox.Session):
+    if CTT_DIR.is_dir():
+        session.log(f"Removing directory: {CTT_DIR}")
+        shutil.rmtree(CTT_DIR, onerror=on_rm_error)
 
 
 # helpers
