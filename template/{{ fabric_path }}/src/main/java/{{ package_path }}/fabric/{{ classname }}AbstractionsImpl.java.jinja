@@ -12,4 +12,8 @@ public class {{ classname }}AbstractionsImpl {
     public static Path getConfigDirectory() {
         return FabricLoader.getInstance().getConfigDir();
     }
+	
+    public static void initPlatformSpecific() {
+        {{ classname }}ConfigFabric.init();
+    }
 }
