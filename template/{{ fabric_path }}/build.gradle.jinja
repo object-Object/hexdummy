@@ -57,14 +57,6 @@ dependencies {
     shadowCommon(project(path: ":{{ common_path }}", configuration: "transformProductionFabric")) { transitive false }
 }
 
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
-}
-
 shadowJar {
     exclude "architectury.common.json"
 
@@ -94,25 +86,6 @@ components.java {
         skip()
     }
 }
-
-// this fixes mod's hex notebook additions missing in dev runtime because of something with how patchouli handles its data
-// the only other thing that could fix it was adding common's resources to srcDirs directly,
-// but that lead to the built jar causing mixin injection crashes in non-dev environments
-// feel free to reach out if you manage to fix this without copying the book data
-tasks.register("clearGeneratedBook", Delete) {
-    description "Clear the book in generated resources."
-
-    delete "src/generated/resources/$bookPath"
-}
-tasks.register("copyBookToGenerated", Copy) {
-    description "Copy the book from resources to generated resources."
-
-    from "../{{ common_path }}/src/main/resources/$bookPath"
-    into "src/generated/resources/$bookPath"
-}
-tasks.copyBookToGenerated.dependsOn(tasks.clearGeneratedBook)
-tasks.processResources.dependsOn(tasks.copyBookToGenerated)
-tasks.sourcesJar.dependsOn(tasks.copyBookToGenerated)
 
 publishing {
     publications {

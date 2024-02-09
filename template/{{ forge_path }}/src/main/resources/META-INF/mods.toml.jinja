@@ -1,6 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[43,)"
-#issueTrackerURL = ""
+loaderVersion = "[${forgeDependencyVersion},)"
 license = "{{ license }}"
 
 [[mods]]
@@ -16,27 +15,27 @@ description = '''
 [[dependencies.{{ modid }}]]
 modId = "forge"
 mandatory = true
-versionRange = "[43,)"
+versionRange = "[${forgeDependencyVersion},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.{{ modid }}]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2,)"
+versionRange = "[${minecraftVersion},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.{{ modid }}]]
 modId = "architectury"
 mandatory = true
-versionRange = "[6.5.85,)"
+versionRange = "[${architecturyVersion},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.{{ modid }}]]
 modId = "hexcasting"
 mandatory = true
-versionRange = "[{{ hexcasting_version }},)"
+versionRange = "[${hexcastingVersion},)"
 ordering = "NONE"
 side = "BOTH"

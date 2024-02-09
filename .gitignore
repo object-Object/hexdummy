@@ -16,3 +16,5 @@ env.bak/
 venv.bak/
 
 .DS_Store
+
+.java_home.env

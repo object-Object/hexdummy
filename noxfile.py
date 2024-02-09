@@ -18,14 +18,23 @@ MAPPINGS_NAMES = [
     "yarn",
 ]
 
+JAVA_HOME_FILE = Path(".java_home.env")
+CTT_DIR = Path(".ctt")
+
 nox.options.reuse_existing_virtualenvs = True
 nox.options.stop_on_first_error = True
+nox.options.sessions = [
+    "ctt",
+    "setup",
+    "gradle_build",
+    "hexdoc",
+]
 
 
 def parametrize_output_dir():
     return nox.parametrize(
         "output_dir",
-        [Path(".ctt") / name for name in MAPPINGS_NAMES],
+        [CTT_DIR / name for name in MAPPINGS_NAMES],
         ids=MAPPINGS_NAMES,
     )
 
@@ -37,10 +46,8 @@ def parametrize_output_dir():
 def ctt(session: nox.Session):
     session.install("copier-template-tester")
 
-    ctt_dir = Path(".ctt")
-    if ctt_dir.is_dir():
-        session.log(f"Removing directory: {ctt_dir}")
-        shutil.rmtree(ctt_dir, onerror=on_rm_error)
+    for git_dir in CTT_DIR.glob("*/.git"):
+        try_rmtree(session, git_dir)
 
     session.run("ctt", silent=not is_ci())
 
@@ -77,15 +84,16 @@ def setup(session: nox.Session, output_dir: Path):
         "--skip",
         ".gitignore",
         "--defaults",
+        "--overwrite",
     )
 
 
 @nox.session(python=False)
 @parametrize_output_dir()
 def gradle_build(session: nox.Session, output_dir: Path):
+    env = gradle_env()
     session.chdir(output_dir)
-
-    session.run(*gradle(), "build", external=True)
+    session.run(*gradle(), "build", external=True, env=env)
 
 
 @nox.session
@@ -94,13 +102,25 @@ def hexdoc(session: nox.Session, output_dir: Path):
     session.chdir(output_dir)
 
     session.install(".")
-    session.run("pip", "freeze")
 
     session.run("hexdoc", "build")
     session.run("hexdoc", "merge")
 
 
+@nox.session(python=False)
+def clean(session: nox.Session):
+    try_rmtree(session, CTT_DIR)
+
+
 # helpers
+
+
+def try_rmtree(session: nox.Session, path: Path):
+    if not path.is_dir():
+        return
+
+    session.log(f"Removing directory: {path}")
+    shutil.rmtree(path, onerror=on_rm_error)
 
 
 def on_rm_error(func: Any, path: str, exc_info: Any):
@@ -120,3 +140,12 @@ def gradle() -> list[str]:
             return [".\\gradlew.bat"]
         case _:
             return ["sh", "./gradlew"]
+
+
+def gradle_env():
+    env = dict[str, str]()
+
+    if JAVA_HOME_FILE.is_file():
+        env["JAVA_HOME"] = JAVA_HOME_FILE.read_text("utf-8").strip()
+
+    return env
