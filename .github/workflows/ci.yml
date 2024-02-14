@@ -45,15 +45,17 @@ jobs:
 
       - name: Run tests
         run: nox -k ${{ matrix.mappings }}
-
+      
+      # kill java because gradle leaves an orphaned process that interferes with git clean
       - name: Prepare rendered project for upload
         if: matrix.upload
         run: |
           mkdir _build
           cp .ctt/${{ matrix.mappings }}/*/build/libs/*.jar _build
           cd .ctt/${{ matrix.mappings }}
+          taskkill /F /IM "java.exe"
           git config core.longPaths true
-          git clean -fdX -e _site
+          git clean -fdX --exclude "!_site/"
 
       - name: Upload full rendered project artifact
         if: matrix.upload
