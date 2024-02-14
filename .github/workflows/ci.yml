@@ -55,6 +55,7 @@ jobs:
           taskkill /F /IM "java.exe"
           git config core.longPaths true
           git clean -fdX --exclude "!_site/"
+          rm -Recurse -Force .git
 
       - name: Upload full rendered project artifact
         if: matrix.upload
