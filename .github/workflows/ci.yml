@@ -45,16 +45,24 @@ jobs:
       - name: Run tests
         run: nox -k ${{ matrix.mappings }}
 
+      - name: Prepare rendered project for upload
+        if: matrix.upload
+        run: |
+          mkdir _build
+          cp .ctt/${{ matrix.mappings }}/*/build/libs/*.jar _build
+          cd .ctt/${{ matrix.mappings }}
+          git clean -fdX -e _site
+
       - name: Upload full rendered project artifact
         if: matrix.upload
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.mappings }}-example-all
+          name: example-${{ matrix.mappings }}-full
           path: .ctt/${{ matrix.mappings }}/
 
       - name: Upload build artifact
         if: matrix.upload
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.mappings }}-example-build
-          path: .ctt/${{ matrix.mappings }}/*/build/libs/*.jar
+          name: example-${{ matrix.mappings }}-build
+          path: _build/
