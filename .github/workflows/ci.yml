@@ -12,6 +12,10 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
         java-version: [17]
         mappings: [mojmap, yarn]
+        include:
+          - os: ubuntu-latest
+            java-version: 17
+            upload: true
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -38,3 +42,17 @@ jobs:
 
       - name: Run tests
         run: nox -k ${{ matrix.mappings }}
+
+      - name: Upload full rendered project artifact
+        if: matrix.upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.mappings }}-example-all
+          path: .ctt/${{ matrix.mappings }}/
+
+      - name: Upload build artifact
+        if: matrix.upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.mappings }}-example-build
+          path: .ctt/${{ matrix.mappings }}/*/build/libs/*.jar
