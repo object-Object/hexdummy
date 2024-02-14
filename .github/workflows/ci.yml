@@ -60,12 +60,12 @@ jobs:
         if: matrix.upload
         uses: actions/upload-artifact@v4
         with:
-          name: example-${{ matrix.mappings }}-full
+          name: example-project-${{ matrix.mappings }}
           path: .ctt/${{ matrix.mappings }}/
 
       - name: Upload build artifact
         if: matrix.upload
         uses: actions/upload-artifact@v4
         with:
-          name: example-${{ matrix.mappings }}-build
+          name: example-build-${{ matrix.mappings }}
           path: _build/
