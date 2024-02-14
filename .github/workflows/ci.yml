@@ -51,6 +51,7 @@ jobs:
           mkdir _build
           cp .ctt/${{ matrix.mappings }}/*/build/libs/*.jar _build
           cd .ctt/${{ matrix.mappings }}
+          git config core.longPaths true
           git clean -fdX -e _site
 
       - name: Upload full rendered project artifact
