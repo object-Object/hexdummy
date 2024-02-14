@@ -13,7 +13,9 @@ jobs:
         java-version: [17]
         mappings: [mojmap, yarn]
         include:
-          - os: ubuntu-latest
+          # artifacts forbid `:` in filenames because of NTFS
+          # so just upload from Windows since hexdoc already accounts for that
+          - os: windows-latest
             java-version: 17
             upload: true
       fail-fast: false
