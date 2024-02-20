@@ -19,13 +19,13 @@ from [Architectury templates](https://github.com/architectury/architectury-templ
    pipx install copier
 
    # main addon
-   copier copy gh:FallingColors/hexdummy .
+   pipx run copier copy gh:FallingColors/hexdummy .
    
    # hexdoc web book
    # note: unless otherwise specified, when the prompts here refer to "package", it means the Python hexdoc addon package being created
-   copier copy gh:hexdoc-dev/hexdoc-hexcasting-template . --answers-file .hexdoc-template-inputs.yml --skip .gitignore --defaults
+   pipx run copier copy gh:hexdoc-dev/hexdoc-hexcasting-template . --answers-file .hexdoc-template-inputs.yml --skip .gitignore --defaults
    ```
-4. Launch the game client with `gradlew fabric:runClient` to make sure it works.
+4. Launch the game client with `./gradlew fabric:runClient` (Unix) or `.\gradlew.bat fabric:runClient` (Windows) to make sure it works.
 5. Finish setting up the web book:
    1. Follow the setup steps in `doc/README.md`.
    2. Try running `hexdoc serve` to make sure the book works.
