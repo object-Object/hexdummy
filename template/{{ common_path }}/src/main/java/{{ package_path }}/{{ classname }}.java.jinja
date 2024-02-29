@@ -5,6 +5,7 @@ package {{ package }};
 import {{ package }}.registry.{{ classname }}IotaTypeRegistry;
 import {{ package }}.registry.{{ classname }}ItemRegistry;
 import {{ package }}.registry.{{ classname }}PatternRegistry;
+import {{ package }}.networking.{{ classname }}Networking;
 {{ import(
     mojmap="net.minecraft.resources.ResourceLocation",
     yarn="net.minecraft.util.Identifier",
@@ -28,6 +29,7 @@ public class {{ classname }} {
         {{ classname }}ItemRegistry.init();
         {{ classname }}IotaTypeRegistry.init();
         {{ classname }}PatternRegistry.init();
+		{{ classname }}Networking.init();
 
         LOGGER.info({{ classname }}Abstractions.getConfigDirectory().toAbsolutePath().normalize().toString());
     }
