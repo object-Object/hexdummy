@@ -80,3 +80,10 @@ jobs:
         with:
           name: example-build-${{ matrix.mappings }}
           path: _build/
+
+  # dummy job, just makes it easier to require all tests to pass before merging PRs
+  tests-passed:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "yay!"
