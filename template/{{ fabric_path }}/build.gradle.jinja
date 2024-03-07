@@ -157,3 +157,9 @@ publishMods {
 //        }
 //    }
 }
+
+afterEvaluate {
+    tasks.named("genSourcesWithCfr") {
+        dependsOn ":{{ common_path }}:unpickJar"
+    }
+}
