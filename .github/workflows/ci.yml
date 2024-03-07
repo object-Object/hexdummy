@@ -21,7 +21,6 @@ jobs:
           - yarn
         nox-tags:
           - build
-          - genSources
         include:
           # artifacts forbid `:` in filenames because of NTFS
           # so just upload from Windows since hexdoc already accounts for that
