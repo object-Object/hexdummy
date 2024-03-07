@@ -1,0 +1,25 @@
+{% from "macros/mappings.jinja" import mappings as _, import, ns with context -%}
+
+package {{ package }}.client;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+{{ import(
+    mojmap="net.minecraft.client.Minecraft",
+    yarn="net.minecraft.client.MinecraftClient",
+) }}{% set MinecraftClient = ns.import %};
+
+/**
+ * This class is created to separate client-only code into a dedicated package.
+ */
+@Environment(EnvType.CLIENT)
+public class LookClient {
+    /**
+     * Alters the tilt of the player's head.
+     * @param pitch New pitch or {@code null}
+     */
+    public static void setLookPitch(float pitch) {
+        assert {{ MinecraftClient }}.getInstance().player != null;
+        {{ MinecraftClient }}.getInstance().player.{{ _(mojmap="setXRot", yarn="setPitch") }}(pitch);
+    }
+}
