@@ -44,7 +44,7 @@ class OpCongrats : SpellAction {
     override fun execute(args: List<Iota>, ctx: CastingContext): Triple<RenderedSpell, Int, List<ParticleSpray>> {
         val target = args.getEntity(0, argc)
 
-        // makes sure that the position is inside the range
+        // makes sure that the target player is inside the range
         // the caster is allowed to affect.
         ctx.assertEntityInRange(target)
 
@@ -67,8 +67,8 @@ class OpCongrats : SpellAction {
      */
     private data class Spell(val player: {{ ServerPlayer }}) : RenderedSpell {
         override fun cast(ctx: CastingContext) {
-            ctx.caster.{{ _(mojmap="sendSystemMessage", yarn="sendMessage") }}({{ Component }}.translatable("text.{{ modid }}.congrats", player.displayName));
-            {{ classname }}Networking.sendToPlayer(ctx.caster, SetLookPitchS2CMsg(-90f))
+            player.{{ _(mojmap="sendSystemMessage", yarn="sendMessage") }}({{ Component }}.translatable("text.{{ modid }}.congrats", player.displayName));
+            {{ classname }}Networking.sendToPlayer(player, SetLookPitchS2CMsg(-90f))
         }
     }
 }
