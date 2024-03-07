@@ -109,7 +109,10 @@ def hexdoc(session: nox.Session, output_dir: Path):
     session.run("hexdoc", "merge")
 
 
-@nox.session(tags=["build"], python=False)
+# genSources
+
+
+@nox.session(tags=["genSources"], python=False)
 @parametrize_output_dir()
 def gradle_genSources(session: nox.Session, output_dir: Path):
     env = gradle_env()
