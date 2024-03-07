@@ -1,3 +1,5 @@
+{% from "macros/mappings.jinja" import is_yarn with context -%}
+
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "me.modmuss50.mod-publish-plugin" version "0.3.0"
@@ -158,8 +160,12 @@ publishMods {
 //    }
 }
 
+{%- if is_yarn() %}
+
+// fix "...without declaring an explicit or implicit dependency" error with root genSources task
 afterEvaluate {
     tasks.named("genSourcesWithCfr") {
         dependsOn ":{{ common_path }}:unpickJar"
     }
 }
+{%- endif %}
