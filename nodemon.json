@@ -1,0 +1,11 @@
+{
+    "watch": [
+        "macros",
+        "template",
+        "copier.yml",
+        "ctt.toml",
+        "noxfile.py"
+    ],
+    "ext": "*",
+    "exec": "nox --session ctt --no-install"
+}
