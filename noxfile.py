@@ -23,11 +23,10 @@ CTT_DIR = Path(".ctt")
 
 nox.options.reuse_existing_virtualenvs = True
 nox.options.stop_on_first_error = True
+
 nox.options.sessions = [
     "ctt",
     "setup",
-    "gradle_build",
-    "hexdoc",
 ]
 
 
@@ -39,10 +38,10 @@ def parametrize_output_dir():
     )
 
 
-# sessions
+# setup
 
 
-@nox.session
+@nox.session(tags=["setup", "mojmap", "yarn"])
 def ctt(session: nox.Session):
     session.install("copier-template-tester")
 
@@ -52,7 +51,7 @@ def ctt(session: nox.Session):
     session.run("ctt", silent=not is_ci())
 
 
-@nox.session
+@nox.session(tags=["setup"])
 @parametrize_output_dir()
 def setup(session: nox.Session, output_dir: Path):
     session.chdir(output_dir)
@@ -88,7 +87,10 @@ def setup(session: nox.Session, output_dir: Path):
     )
 
 
-@nox.session(python=False)
+# build
+
+
+@nox.session(tags=["build"], python=False)
 @parametrize_output_dir()
 def gradle_build(session: nox.Session, output_dir: Path):
     env = gradle_env()
@@ -96,7 +98,7 @@ def gradle_build(session: nox.Session, output_dir: Path):
     session.run(*gradle(), "build", external=True, env=env)
 
 
-@nox.session
+@nox.session(tags=["build"])
 @parametrize_output_dir()
 def hexdoc(session: nox.Session, output_dir: Path):
     session.chdir(output_dir)
@@ -107,12 +109,26 @@ def hexdoc(session: nox.Session, output_dir: Path):
     session.run("hexdoc", "merge")
 
 
+# genSources
+
+
+@nox.session(tags=["genSources"], python=False)
+@parametrize_output_dir()
+def gradle_genSources(session: nox.Session, output_dir: Path):
+    env = gradle_env()
+    session.chdir(output_dir)
+    session.run(*gradle(), "genSources", external=True, env=env)
+
+
+# other sessions
+
+
 @nox.session(python=False)
 def clean(session: nox.Session):
     try_rmtree(session, CTT_DIR)
 
 
-# helpers
+# helper functions
 
 
 def try_rmtree(session: nox.Session, path: Path):
