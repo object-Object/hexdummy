@@ -37,7 +37,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: ${{ matrix.java-version }}
@@ -48,7 +48,7 @@ jobs:
       - name: Copy template
         run: nox --keywords ${{ matrix.mappings }} --tags setup
 
-      - uses: gradle/gradle-build-action@v2
+      - uses: gradle/actions/setup-gradle@v3
         with:
           build-root-directory: .ctt/${{ matrix.mappings }}
 
