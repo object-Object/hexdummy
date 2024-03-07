@@ -1,7 +1,19 @@
-{% macro mappings(mojmap, yarn) -%}
+{% macro is_mojmap() -%}
   {%- if mappings_name == "Mojmap" -%}
+    true
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro is_yarn() -%}
+  {%- if mappings_name == "Yarn" -%}
+    true
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro mappings(mojmap, yarn) -%}
+  {%- if is_mojmap() -%}
     {{ mojmap }}
-  {%- elif mappings_name == "Yarn" -%}
+  {%- elif is_yarn() -%}
     {{ yarn }}
   {%- else -%}
     {% include "error: unhandled mapping `"~mappings_name~"`" %}
