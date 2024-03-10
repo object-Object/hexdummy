@@ -83,10 +83,11 @@ capitalize_platforms:
 
 mappings_name:
   type: str
+  help: "Mappings (note: Hex Casting uses Mojmap)"
   choices:
     - Mojmap
     - Yarn
-  default: Yarn
+  default: Mojmap
 
 # static/computed values
 
