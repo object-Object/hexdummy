@@ -86,4 +86,5 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - run: echo "yay!"
+      - name: Celebrate
+        run: echo "yay!"
