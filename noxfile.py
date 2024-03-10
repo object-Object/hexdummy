@@ -27,6 +27,9 @@ nox.options.stop_on_first_error = True
 nox.options.sessions = [
     "ctt",
     "setup",
+    "gradle_build",
+    "gradle_genSources",
+    "hexdoc",
 ]
 
 
