@@ -1,0 +1,21 @@
+{% set JAVA_IDENTIFIER = "[a-zA-Z_$][a-zA-Z\d_$]*" %}
+
+{% macro not_empty(value) -%}
+  {%- if not value -%}
+    Value must not be blank
+  {% endif -%}{#- keep trailing newline so it looks better -#}
+{%- endmacro %}
+
+{% macro regex(value, pattern) -%}
+  {%- if not value|regex_search(pattern) -%}
+    Value must match the following regex: {{ pattern }}
+  {% endif -%}
+{%- endmacro %}
+
+{% macro java_identifier(value) -%}
+  {{- regex(value, "^"~JAVA_IDENTIFIER~"$") -}}
+{%- endmacro %}
+
+{% macro java_package(value) -%}
+  {{- regex(value, "^"~JAVA_IDENTIFIER~"(\\."~JAVA_IDENTIFIER~")*"~"$") -}}
+{%- endmacro %}

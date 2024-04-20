@@ -21,16 +21,25 @@ _exclude:
 
 modid:
   type: str
-  validator: "{% if not modid %}Value must not be blank{% endif %}"
+  validator: |
+    {%- import "macros/validators.jinja" as validators -%}
+    {{- validators.not_empty(modid) -}}
+    {{- validators.regex(modid, "^[a-z][a-z0-9_]{1,63}$") -}}
 
 author:
   type: str
-  validator: "{% if not author %}Value must not be blank{% endif %}"
+  validator: |
+    {%- import "macros/validators.jinja" as validators -%}
+    {{- validators.not_empty(author) -}}
 
 classname:
   type: str
   help: "classname base (eg. '{{ modid|capitalize }}' -> '{{ modid|capitalize }}Client.java')"
   default: "{{ modid|capitalize }}"
+  validator: |
+    {%- import "macros/validators.jinja" as validators -%}
+    {{- validators.not_empty(classname) -}}
+    {{- validators.java_identifier(classname) -}}
 
 display_name:
   type: str
@@ -75,6 +84,10 @@ hexcasting_version:
 package:
   type: str
   default: "net.{{ modid }}"
+  validator: |
+    {%- import "macros/validators.jinja" as validators -%}
+    {{- validators.not_empty(package) -}}
+    {{- validators.java_package(package) -}}
 
 capitalize_platforms:
   type: bool
