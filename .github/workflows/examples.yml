@@ -25,6 +25,9 @@ jobs:
       - name: Copy template
         run: nox --keywords ${{ matrix.mappings }} --tags setup
 
+      - name: Prepare example project for upload
+        run: rm -rf .ctt/${{ matrix.mappings }}/.git
+
       - name: Upload example project
         uses: actions/upload-artifact@v4
         with:
@@ -44,8 +47,6 @@ jobs:
       group: branch/example/${{ matrix.mappings }}
     env:
       TARGET_BRANCH: example/${{ matrix.mappings }}
-    permissions:
-      contents: write
     environment:
       name: example-projects
       url: https://github.com/FallingColors/hexdummy/tree/${{ env.TARGET_BRANCH }}
@@ -77,5 +78,6 @@ jobs:
       - name: Deploy example project
         run: |
           SHORT_SHA=`echo ${{ github.sha }} | cut -c1-10`
-          git commit -am "Deploy ${{ env.TARGET_BRANCH }} from ${SHORT_SHA}"
+          git add .
+          git commit -m "Deploy ${{ env.TARGET_BRANCH }} from ${SHORT_SHA}"
           git push
