@@ -21,9 +21,10 @@ MAPPINGS_NAMES = [
 JAVA_HOME_FILE = Path(".java_home.env")
 CTT_DIR = Path(".ctt")
 
+
+nox.options.default_venv_backend = "uv|virtualenv"
 nox.options.reuse_existing_virtualenvs = True
 nox.options.stop_on_first_error = True
-
 nox.options.sessions = [
     "ctt",
     "setup",
