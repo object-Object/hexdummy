@@ -9,6 +9,10 @@ the forge-fabric-mixin 1.19.2 template
 from [Architectury templates](https://github.com/architectury/architectury-templates), a few helpful bits from
 [Hex Gloop](https://github.com/SamsTheNerd/HexGloop)'s setup, and some custom improvements thrown in.
 
+See the following branches for up-to-date example projects generated using HexDummy:
+* [example/mojmap](https://github.com/FallingColors/hexdummy/tree/example/mojmap)
+* [example/yarn](https://github.com/FallingColors/hexdummy/tree/example/yarn)
+
 ## How to get started?
 
 1. Install Python 3.11+, then follow [these instructions](https://pypa.github.io/pipx/#install-pipx) to install pipx.
