@@ -44,6 +44,8 @@ jobs:
       group: branch/example/${{ matrix.mappings }}
     env:
       TARGET_BRANCH: example/${{ matrix.mappings }}
+    permissions:
+      contents: write
     environment:
       name: example-projects
       url: https://github.com/FallingColors/hexdummy/tree/${{ env.TARGET_BRANCH }}
@@ -74,6 +76,6 @@ jobs:
 
       - name: Deploy example project
         run: |
-          git add .
-          git commit -m "Deploy ${{ env.TARGET_BRANCH }} from ${{ github.sha }}"
-          git push --force-with-lease
+          SHORT_SHA=`echo ${{ github.sha }} | cut -c1-10`
+          git commit -am "Deploy ${{ env.TARGET_BRANCH }} from ${SHORT_SHA}"
+          git push
