@@ -1,0 +1,79 @@
+name: Deploy example projects
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mappings:
+          - mojmap
+          - yarn
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: object-Object/ci/setup@v0
+        with:
+          python-version: "3.11"
+          python-packages: nox
+
+      - name: Copy template
+        run: nox --keywords ${{ matrix.mappings }} --tags setup
+
+      - name: Upload example project
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.mappings }}
+          path: .ctt/${{ matrix.mappings }}/
+  
+  upload:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mappings:
+          - mojmap
+          - yarn
+    concurrency:
+      group: branch/example/${{ matrix.mappings }}
+    env:
+      TARGET_BRANCH: example/${{ matrix.mappings }}
+    environment:
+      name: example-projects
+      url: https://github.com/FallingColors/hexdummy/tree/${{ env.TARGET_BRANCH }}
+    steps:
+      # https://github.com/orgs/community/discussions/25305#discussioncomment-8256560
+      - uses: actions/create-github-app-token@v1
+        id: token
+        with:
+          app-id: ${{ vars.DEPLOYMENT_APP_ID }}
+          private-key: ${{ secrets.DEPLOYMENT_PRIVATE_KEY }}
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ env.TARGET_BRANCH }}
+          token: ${{ steps.token.outputs.token }}
+
+      - name: Download example project
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.mappings }}
+
+      # https://github.com/orgs/community/discussions/26560#discussioncomment-3531273
+      - name: Set Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Deploy example project
+        run: |
+          git add .
+          git commit -m "Deploy ${{ env.TARGET_BRANCH }} from ${{ github.sha }}"
+          git push --force-with-lease
