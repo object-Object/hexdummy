@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "hexdummy",
+  "version": "${version}",
+  "name": "Hex Dummy",
+  "description": "Hex Dummy addon for Hex Casting",
+  "authors": [
+    "artynova"
+  ],
+  "contact": {
+    "homepage": "https://artynova.github.io/hexdummy",
+    "sources": "https://github.com/artynova/hexdummy"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.hexdummy.fabric.HexDummyFabric"
+    ],
+    "client": [
+      "net.hexdummy.fabric.HexDummyClientFabric"
+    ]
+  },
+  "mixins": [
+    "hexdummy-common.mixins.json",
+    "hexdummy.mixins.json"
+  ],
+  "depends": {
+    "minecraft": ">=${minecraftVersion}",
+    "fabricloader": ">=${fabricLoaderVersion}",
+    "fabric-api": "*",
+    "fabric-language-kotlin": ">=${fabricKotlinVersion}",
+    "architectury": ">=${architecturyVersion}",
+    "hexcasting": ">=${hexcastingVersion}"
+  }
+}
