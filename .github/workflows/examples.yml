@@ -26,7 +26,11 @@ jobs:
         run: nox --keywords ${{ matrix.mappings }} --tags setup
 
       - name: Prepare example project for upload
-        run: rm -rf .ctt/${{ matrix.mappings }}/.git
+        working-directory: .ctt/${{ matrix.mappings }}
+        run: |
+          rm -rf .git
+          mv .github .github_disabled
+          echo "This directory would be called `.github` in a real project, but it's renamed here to prevent the generated workflows from actually running." >> .github_disabled/README.md
 
       - name: Upload example project
         uses: actions/upload-artifact@v4
