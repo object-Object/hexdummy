@@ -1,6 +1,5 @@
 # Copier settings
 
-_subdirectory: template
 _answers_file: .copier-answers.hexdummy.yml
 
 _exclude:
@@ -98,6 +97,11 @@ capitalize_platforms:
   help: Capitalize platform directory names? (eg. Common vs common)
   default: false
 
+kotlin:
+  type: bool
+  help: Use Kotlin?
+  default: true
+
 mappings_name:
   type: str
   help: "Mappings (note: Hex Casting uses Mojmap)"
@@ -106,13 +110,22 @@ mappings_name:
     - Yarn
   default: Mojmap
 
+minecraft_version:
+  type: str
+  help: "Minecraft version"
+  choices:
+    - "1.19.2"
+    - "1.20.1"
+
+---
+!include "prompts/{{ minecraft_version }}.yml"
+---
+
 # static/computed values
 
-mappings_values:
+kotlin_plugin:
   when: false
-  default:
-    Mojmap: 'loom.officialMojangMappings()'
-    Yarn: '"net.fabricmc:yarn:1.19.2+build.28:v2"'
+  default: "{{ 'kotlin' if kotlin else 'java' }}"
 
 common_path:
   when: false

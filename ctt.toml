@@ -2,9 +2,10 @@
 
 [defaults]
 modid = "hexdummy"
-author = "artynova"
+github_user = "artynova"
 classname = "HexDummy"
 display_name = "Hex Dummy"
+minecraft_version = "1.20.1"
 
 [output.".ctt/mojmap"]
 mappings_name = "Mojmap"

@@ -22,7 +22,8 @@
         "*.css.jinja": "jinja-css",
         "*.gradle.jinja": "jinja-groovy",
         "*.java.jinja": "jinja-java",
-        "*.kt.jinja": "jinja-groovy",
+        "*.kt.jinja": "kotlin",
+        "*.gradle.kts.jinja": "gradle-kotlin-dsl",
         "*.mcmeta.jinja": "jinja-json",
         "*.properties.jinja": "jinja-properties",
         "*_copier_conf.answers_file*.jinja": "jinja-yaml",
@@ -30,4 +31,5 @@
     "git.ignoredRepositories": [
         ".ctt/*",
     ],
+    "kotlin.languageServer.enabled": false,
 }

@@ -1,0 +1,69 @@
+{% from "macros/mappings.jinja" import is_yarn, is_mojmap with context -%}
+
+// A convention plugin that should be applied to all Minecraft-related subprojects, including {{ common_path }}.
+
+package {{ modid }}
+
+plugins {
+    id("{{ modid }}.kotlin")
+    id("{{ modid }}.json5")
+
+    `maven-publish`
+    id("dev.architectury.loom")
+}
+
+// plugin config
+
+abstract class {{ base_classname }}MinecraftExtension(private val project: Project) : I{{ base_classname }}MinecraftExtension {
+    override fun platform(platform: String) = project.run {
+        val modId: String by project
+
+        base.archivesName = "$modId-$platform"
+    }
+}
+
+val extension = extensions.create<{{ base_classname }}MinecraftExtension>("{{ base_classname|lower }}Minecraft")
+
+// build logic
+
+loom {
+    silentMojangMappingsLicense()
+    accessWidenerPath = project(":{{ common_path }}").file("src/main/resources/{{ modid }}.accesswidener")
+}
+
+dependencies {
+    minecraft(libs.minecraft)
+
+    {{ mappings(
+        mojmap=
+    "mappings(loom.layered {
+        officialMojangMappings()
+        parchment(libs.parchment)
+    })",
+        yarn="mappings(libs.yarn)",
+    ) }}
+
+    annotationProcessor(libs.bundles.asm)
+}
+
+sourceSets {
+    main {
+        kotlin {
+            srcDir(file("src/main/java"))
+        }
+        resources {
+            srcDir(file("src/generated/resources"))
+        }
+    }
+}
+
+tasks {
+    val artifactsTask = register<Copy>("githubArtifacts") {
+        from(remapJar, remapSourcesJar, get("javadocJar"))
+        into(rootDir.toPath() / "build" / "githubArtifacts")
+    }
+
+    build {
+        dependsOn(artifactsTask)
+    }
+}
