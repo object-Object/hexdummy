@@ -10,74 +10,38 @@ plugins {
     id("me.modmuss50.mod-publish-plugin")
 }
 
-// plugin config
-
-abstract class {{ base_classname }}PlatformExtension(private val project: Project) {
-    abstract val developmentConfiguration: Property<String>
-    abstract val shadowCommonConfiguration: Property<String>
-
-    fun platform(platform: String, vararg extraModLoaders: String) = project.run {
-        // "inheritance" (ie. call the minecraft plugin's platform method so consumers don't have to do it)
-        val minecraftExtension = extensions.getByType<I{{ base_classname }}MinecraftExtension>()
-        minecraftExtension.platform(platform)
-
-        platform.replaceFirstChar(Char::uppercase).also {
-            developmentConfiguration.convention("development$it")
-            shadowCommonConfiguration.convention("transformProduction$it")
-        }
-
-        configurations {
-            named(developmentConfiguration.get()) {
-                extendsFrom(get("common"))
-            }
-        }
-
-        dependencies {
-            "shadowCommon"(project(":{{ common_path }}", shadowCommonConfiguration.get())) { isTransitive = false }
-        }
-
-        publishMods {
-            modLoaders.addAll(platform, *extraModLoaders)
-            displayName = modLoaders.map { values ->
-                val loaders = values.joinToString(", ") { it.replaceFirstChar(Char::uppercase) }
-                // CurseForge/Modrinth version display name (eg. "v0.1.0 [Fabric, Quilt]")
-                "v${project.version} [$loaders]"
-            }
-        }
-    }
-}
-
-val extension = extensions.create<{{ base_classname }}PlatformExtension>("{{ base_classname|lower }}Platform")
-
-// build logic
-
+val platform: String by project
 val curseforgeId: String by project
 val modrinthId: String by project
 
 val minecraftVersion = libs.versions.minecraft.get()
 
-val isCI = (System.getenv("CI") ?: "").isNotBlank()
-val isDryRun = (System.getenv("DRY_RUN") ?: "").isNotBlank()
-val curseforgeToken = System.getenv("CURSEFORGE_TOKEN") ?: ""
-val modrinthToken = System.getenv("MODRINTH_TOKEN") ?: ""
+val platformCapitalized = platform.capitalize()
 
 architectury {
     platformSetupLoomIde()
 }
 
 configurations {
-    val common = register("common")
+    register("common")
     register("shadowCommon")
     compileClasspath {
-        extendsFrom(common)
+        extendsFrom(get("common"))
     }
     runtimeClasspath {
-        extendsFrom(common)
+        extendsFrom(get("common"))
+    }
+    // this needs to wait until Loom has been configured
+    afterEvaluate {
+        named("development$platformCapitalized") {
+            extendsFrom(get("common"))
+        }
     }
 }
 
 dependencies {
     "common"(project(":{{ common_path }}", "namedElements")) { isTransitive = false }
+    "shadowCommon"(project(":{{ common_path }}", "transformProduction$platformCapitalized")) { isTransitive = false }
 }
 
 sourceSets {
@@ -121,14 +85,24 @@ components {
 }
 
 publishMods {
+    val isCI = (System.getenv("CI") ?: "").isNotBlank()
+    val isDryRun = (System.getenv("DRY_RUN") ?: "").isNotBlank()
     dryRun = !isCI || isDryRun
 
     type = BETA
     changelog = provider { getLatestChangelog() }
     file = tasks.remapJar.flatMap { it.archiveFile }
 
+    modLoaders.add(platform)
+
+    displayName = modLoaders.map { values ->
+        val loaders = values.joinToString(", ") { it.capitalize() }
+        // CurseForge/Modrinth version display name (eg. "v0.1.0 [Fabric, Quilt]")
+        "v${project.version} [$loaders]"
+    }
+
     curseforge {
-        accessToken = curseforgeToken
+        accessToken = System.getenv("CURSEFORGE_TOKEN") ?: ""
         projectId = curseforgeId
         minecraftVersions.add(minecraftVersion)
         clientRequired = true
@@ -136,7 +110,7 @@ publishMods {
     }
 
     modrinth {
-        accessToken = modrinthToken
+        accessToken = System.getenv("MODRINTH_TOKEN") ?: ""
         projectId = modrinthId
         minecraftVersions.add(minecraftVersion)
     }
@@ -151,3 +125,5 @@ fun getLatestChangelog() = rootProject.file("CHANGELOG.md").useLines { lines ->
         .joinToString("\n") { it.value }
         .trim()
 }
+
+fun String.capitalize() = replaceFirstChar(Char::uppercase)

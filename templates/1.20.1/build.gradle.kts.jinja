@@ -9,6 +9,6 @@ architectury {
 
 tasks {
     register("runAllDatagen") {
-        dependsOn(":Forge:runCommonDatagen")
+        dependsOn(":{{ forge_path }}:runCommonDatagen")
     }
 }
