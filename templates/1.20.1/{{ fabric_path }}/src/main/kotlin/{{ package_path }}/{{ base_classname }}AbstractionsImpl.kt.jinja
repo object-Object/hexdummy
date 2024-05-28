@@ -1,0 +1,11 @@
+@file:JvmName("{{ base_classname }}AbstractionsImpl")
+
+package {{ package }}.fabric
+
+import {{ package }}.registry.HexDebugRegistrar
+import net.minecraft.core.Registry
+
+fun <T : Any> initRegistry(registrar: HexDebugRegistrar<T>) {
+    val registry = registrar.registry
+    registrar.init { id, value -> Registry.register(registry, id, value) }
+}

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "{{ modid }}",
+  "version": "${modVersion}",
+  "name": "{{ display_name }}",
+  "description": "{{ description }}",
+  "authors": [
+    "{{ github_user }}"
+  ],
+  "contact": {
+    "homepage": "{{ homepage_url }}",
+    "sources": "{{ sources_url }}"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [{
+      "adapter": "kotlin",
+      "value": "{{ package }}.fabric.Fabric{{ base_classname }}"
+    }],
+    "client": [{
+      "adapter": "kotlin",
+      "value": "{{ package }}.fabric.Fabric{{ base_classname }}Client"
+    }],
+    "modmenu": [{
+      "adapter": "kotlin",
+      "value": "{{ package }}.fabric.Fabric{{ base_classname }}ModMenu"
+    }]
+  },
+  "mixins": [
+    "{{ modid }}-common.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "${versions.minecraft}",
+    "fabricloader": ">=${versions.fabric_loader}",
+    "fabric-api": ">=${versions.fabric_api}",
+    "fabric-language-kotlin": ">=${versions.kotlin_fabric}",
+    "architectury": ">=${versions.architectury}",
+    "hexcasting": ">=${versions.hexcasting}",
+    "cloth-config": ">=${versions.clothConfig}"
+  },
+  "suggests": {
+    "modmenu": ">=${versions.modMenu}"
+  }
+}

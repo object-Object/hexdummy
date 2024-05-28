@@ -1,0 +1,37 @@
+@file:OptIn(ExperimentalStdlibApi::class)
+
+package {{ package }}.forge.datagen
+
+import {{ package }}.{{ base_classname }}
+import {{ package }}.items.ItemDebugger
+import {{ package }}.items.ItemDebugger.DebugState
+import {{ package }}.items.ItemDebugger.StepMode
+import {{ package }}.items.ItemEvaluator
+import {{ package }}.items.ItemEvaluator.EvalState
+import {{ package }}.registry.{{ base_classname }}Items
+import {{ package }}.utils.itemPredicate
+import net.minecraft.data.PackOutput
+import net.minecraft.resources.ResourceLocation
+import net.minecraftforge.client.model.generators.ItemModelProvider
+import net.minecraftforge.client.model.generators.ModelBuilder
+import net.minecraftforge.client.model.generators.ModelFile
+import net.minecraftforge.common.data.ExistingFileHelper
+
+class {{ base_classname }}Models(output: PackOutput, efh: ExistingFileHelper) : ItemModelProvider(output, {{ base_classname }}.MODID, efh) {
+    override fun registerModels() {
+        basicItem({{ base_classname }}Items.DUMMY_ITEM.id)
+            .parent(ModelFile.UncheckedModelFile("item/handheld_rod"))
+    }
+}
+
+// utility function for adding multiple possibly missing layers to a generated item model
+fun <T : ModelBuilder<T>> T.layers(start: Int, vararg layers: String?): T {
+    var index = start
+    for (layer in layers) {
+        if (layer != null) {
+            texture("layer$index", layer)
+            index += 1
+        }
+    }
+    return this
+}
