@@ -12,9 +12,10 @@ plugins {
     id("dev.architectury.loom")
 }
 
+val modId: String by project
 val platform: String by project
 
-base.archivesName = "${hexdebugProperties.modId}-$platform"
+base.archivesName = "${modId}-$platform"
 
 loom {
     silentMojangMappingsLicense()
