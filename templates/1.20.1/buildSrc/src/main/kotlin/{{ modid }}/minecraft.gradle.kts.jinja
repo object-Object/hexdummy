@@ -12,19 +12,9 @@ plugins {
     id("dev.architectury.loom")
 }
 
-// plugin config
+val platform: String by project
 
-abstract class {{ base_classname }}MinecraftExtension(private val project: Project) : I{{ base_classname }}MinecraftExtension {
-    override fun platform(platform: String) = project.run {
-        val modId: String by project
-
-        base.archivesName = "$modId-$platform"
-    }
-}
-
-val extension = extensions.create<{{ base_classname }}MinecraftExtension>("{{ base_classname|lower }}Minecraft")
-
-// build logic
+base.archivesName = "${hexdebugProperties.modId}-$platform"
 
 loom {
     silentMojangMappingsLicense()
