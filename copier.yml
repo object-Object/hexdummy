@@ -19,6 +19,11 @@ _exclude:
 
 # questions
 
+advanced:
+  type: bool
+  help: Show advanced options?
+  default: false
+
 modid:
   type: str
   validator: |
@@ -26,20 +31,15 @@ modid:
     {{- validators.not_empty(modid) -}}
     {{- validators.regex(modid, "^[a-z][a-z0-9_]{1,63}$") -}}
 
-author:
-  type: str
-  validator: |
-    {%- import "macros/validators.jinja" as validators -%}
-    {{- validators.not_empty(author) -}}
-
-classname:
+base_classname:
+  when: "{{ advanced }}"
   type: str
   help: "classname base (eg. '{{ modid|capitalize }}' -> '{{ modid|capitalize }}Client.java')"
   default: "{{ modid|capitalize }}"
   validator: |
     {%- import "macros/validators.jinja" as validators -%}
-    {{- validators.not_empty(classname) -}}
-    {{- validators.java_identifier(classname) -}}
+    {{- validators.not_empty(base_classname) -}}
+    {{- validators.java_identifier(base_classname) -}}
 
 display_name:
   type: str
@@ -49,47 +49,51 @@ description:
   type: str
   default: "{{ display_name }} addon for Hex Casting"
 
-license:
+github_user:
   type: str
-  default: MIT
+  validator: |
+    {%- import "macros/validators.jinja" as validators -%}
+    {{- validators.not_empty(github_user) -}}
 
 github_repo:
   type: str
   default: "{{ modid }}"
 
 default_branch:
+  when: "{{ advanced }}"
   type: str
   default: main
 
 sources_url:
+  when: "{{ advanced }}"
   type: str
-  default: "https://github.com/{{ author }}/{{ github_repo }}"
+  default: "https://github.com/{{ github_user }}/{{ github_repo }}"
 
 homepage_url:
+  when: "{{ advanced }}"
   type: str
-  default: "https://{{ author|lower }}.github.io/{{ github_repo }}"
+  default: "https://{{ github_user|lower }}.github.io/{{ github_repo }}"
 
-initial_mod_version:
+mod_version:
+  when: "{{ advanced }}"
   type: str
-  default: "0.0.1"
+  default: "0.1.0"
 
 java_version:
+  when: "{{ advanced }}"
   type: int
   default: 17
 
-hexcasting_version:
-  type: str
-  default: "0.10.3"
-
 package:
   type: str
-  default: "net.{{ modid }}"
+  default: "io.github.{{ github_user|lower }}.{{ modid }}"
   validator: |
     {%- import "macros/validators.jinja" as validators -%}
     {{- validators.not_empty(package) -}}
     {{- validators.java_package(package) -}}
 
 capitalize_platforms:
+  when: "{{ advanced }}"
   type: bool
   help: Capitalize platform directory names? (eg. Common vs common)
   default: false

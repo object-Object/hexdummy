@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+
+Completely rewrote the template from the ground up!
+
 ## 0.0.2
 
 ### Changes
