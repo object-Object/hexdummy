@@ -24,7 +24,7 @@ base_classname:
 
 display_name:
   type: str
-  default: "{{ classname }}"
+  default: "{{ base_classname }}"
 
 description:
   type: str
