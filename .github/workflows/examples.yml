@@ -2,7 +2,9 @@ name: Deploy example projects
 
 on:
   push:
-    branches: main
+    branches:
+      - main
+      - v2
 
 jobs:
   build:
@@ -48,9 +50,9 @@ jobs:
           - mojmap
           - yarn
     concurrency:
-      group: branch/example/${{ matrix.mappings }}
+      group: branch/example/${{ github.ref_name }}/${{ matrix.mappings }}
     env:
-      TARGET_BRANCH: example/${{ matrix.mappings }}
+      TARGET_BRANCH: example/${{ github.ref_name }}/${{ matrix.mappings }}
     environment:
       name: example-projects
       url: https://github.com/FallingColors/hexdummy/tree/${{ env.TARGET_BRANCH }}
