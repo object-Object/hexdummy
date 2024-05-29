@@ -7,8 +7,10 @@ architectury {
 }
 
 {{ modid }}ModDependencies {
+    // expand versions in fabric.mod.json
     filesMatching.add("fabric.mod.json")
 
+    // transform Gradle version ranges into a Fabric-compatible format
     anyVersion = "*"
     mapVersions {
         replace(",", " ")
@@ -19,13 +21,12 @@ architectury {
         replace(Regex("""(\S+)\["""), "<$1")
     }
 
+    // CurseForge/Modrinth mod dependency metadata
     requires("architectury-api")
     requires("cloth-config")
     requires(curseforge = "hexcasting", modrinth = "hex-casting")
-
     requires("fabric-api")
     requires("fabric-language-kotlin")
-
     optional("modmenu")
 }
 
@@ -44,14 +45,17 @@ dependencies {
         // If not excluded here, calls a nonexistent method and crashes the dev client
         exclude(module = "phosphor")
     }
+    // Hex Casting dependencies
+    // we use modLocalRuntime to add these to the development runtime, but not at compile time or for consumers of this project
     modLocalRuntime(libs.paucal.fabric)
     modLocalRuntime(libs.patchouli.fabric)
     modLocalRuntime(libs.cardinalComponents)
     modLocalRuntime(libs.serializationHooks)
     modLocalRuntime(libs.trinkets)
 
+    // this is also a Hex dependency, but it's included in case you want to use it for stuff
     libs.mixinExtras.also {
-        localRuntime(it)
+        implementation(it)
         include(it)
     }
 
@@ -74,17 +78,23 @@ publishMods {
         type = STABLE
         displayName = "v${project.version}"
         tagName = "v${project.version}"
-
-        additionalFiles.from(project(":Common").tasks.remapJar.get().archiveFile)
-        project(":Forge").afterEvaluate {
-            additionalFiles.from(tasks.remapJar.get().archiveFile)
-        }
     }
 }
 
 tasks {
     named("publishGithub") {
-        dependsOn(project(":Common").tasks.remapJar)
-        dependsOn(project(":Forge").tasks.remapJar)
+        dependsOn(project(":{{ common_path }}").tasks.remapJar)
+        dependsOn(project(":{{ forge_path }}").tasks.remapJar)
+
+        // we need to do this here so that it waits until {{ forge_path }} is already configured
+        // otherwise tasks.remapJar doesn't exist yet
+        publishMods {
+            github {
+                additionalFiles.from(
+                    project(":{{ common_path }}").tasks.remapJar.get().archiveFile,
+                    project(":{{ forge_path }}").tasks.remapJar.get().archiveFile,
+                )
+            }
+        }
     }
 }

@@ -33,18 +33,20 @@ loom {
 }
 
 {{ modid }}ModDependencies {
+    // expand versions in mods.toml
     filesMatching.add("META-INF/mods.toml")
 
+    // transform Gradle version ranges into a Forge-compatible format
     anyVersion = ""
     mapVersions {
         replace(Regex("""\](\S+)"""), "($1")
         replace(Regex("""(\S+)\["""), "$1)")
     }
 
+    // CurseForge/Modrinth mod dependency metadata
     requires("architectury-api")
     requires("cloth-config")
     requires(curseforge = "hexcasting", modrinth = "hex-casting")
-
     requires("kotlin-for-forge")
 }
 
@@ -55,6 +57,9 @@ dependencies {
     implementation(libs.kotlin.forge)
 
     modApi(libs.hexcasting.forge) { isTransitive = false }
+    // Hex Casting dependencies
+    // we use modLocalRuntime to add these to the development runtime, but not at compile time or for consumers of this project
+    // but we use PAUCAL for datagen, so that's part of the actual implementation
     modImplementation(libs.paucal.forge)
     modLocalRuntime(libs.patchouli.forge)
     modLocalRuntime(libs.caelus)
@@ -62,7 +67,7 @@ dependencies {
     modApi(libs.clothConfig.forge)
 
     libs.mixinExtras.also {
-        localRuntime(it)
+        implementation(it)
         include(it)
     }
 }
