@@ -1,0 +1,27 @@
+# Changes here will be overwritten by Copier. NEVER EDIT MANUALLY
+# See: https://copier.readthedocs.io/en/stable/configuring/#the-copier-answersyml-file
+_commit: v0.1.11
+_src_path: gh:hexdoc-dev/hexdoc-hexcasting-template
+author: artynova
+book_id: hexdummy:hexdummybook
+default_branch: main
+github_repo: hexdummy
+gradle_mod_version_key: modVersion
+hexdoc_mod_plugin_classname: HexDummyModPlugin
+hexdoc_plugin_classname: HexDummyPlugin
+java_lang:
+    ext: java
+    src: java
+java_package: io/github/artynova/hexdummy
+mod_display_name: Hex Dummy
+modid: hexdummy
+multiloader: true
+package_export_root: doc/src/hexdoc_hexdummy/_export
+package_name: hexdoc-hexdummy
+package_slug: hexdoc_hexdummy
+package_src: doc/src/hexdoc_hexdummy
+pages_url: https://artynova.github.io/hexdummy
+pattern_regex:
+    per_world_value: registerPerWorld
+    regex: (?P<is_per_world>register|registerPerWorld)\(HexPattern\.fromAngles\("(?P<signature>[qweasd]+)",\s*HexDir\.(?P<startdir>\w+)\),\s*"(?P<name>[^"]+)"?
+pattern_registry: registry/HexDummyPatterns.java

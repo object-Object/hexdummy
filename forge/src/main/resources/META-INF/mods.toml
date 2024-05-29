@@ -1,0 +1,46 @@
+modLoader = "kotlinforforge"
+loaderVersion = "[${versions.kotlin_forge},)"
+license = "MIT"
+
+[[mods]]
+modId = "hexdummy"
+version = "${modVersion}"
+displayName = "Hex Dummy"
+logoFile = "icon.png"
+authors = "artynova"
+description = "Hex Dummy addon for Hex Casting"
+
+[[dependencies.hexdummy]]
+modId = "forge"
+mandatory = true
+versionRange = "[${versions.forge_dependency},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hexdummy]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[${versions.minecraft},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hexdummy]]
+modId = "architectury"
+mandatory = true
+versionRange = "[${versions.architectury},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hexdummy]]
+modId = "cloth_config"
+mandatory = true
+versionRange = "[${versions.cloth_config},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hexdummy]]
+modId = "hexcasting"
+mandatory = true
+versionRange = "[${versions.hexcasting},)"
+ordering = "NONE"
+side = "BOTH"

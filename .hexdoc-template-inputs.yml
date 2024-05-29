@@ -1,0 +1,19 @@
+author: artynova
+book_id: "hexdummy:hexdummybook"
+default_branch: main
+github_repo: hexdummy
+gradle_mod_version_key: modVersion
+hexdoc_mod_plugin_classname: HexDummyModPlugin
+hexdoc_plugin_classname: HexDummyPlugin
+java_lang:
+  ext: java
+  src: java
+java_package: io/github/artynova/hexdummy
+mod_display_name: Hex Dummy
+modid: hexdummy
+multiloader: true
+pages_url: https://artynova.github.io/hexdummy
+pattern_regex:
+  regex: '(?P<is_per_world>register|registerPerWorld)\(HexPattern\.fromAngles\("(?P<signature>[qweasd]+)",\s*HexDir\.(?P<startdir>\w+)\),\s*"(?P<name>[^"]+)"?'
+  per_world_value: registerPerWorld
+pattern_registry: registry/HexDummyPatterns.java
