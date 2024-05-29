@@ -12,19 +12,19 @@ modid:
     {{- validators.not_empty(modid) -}}
     {{- validators.regex(modid, "^[a-z][a-z0-9_]{1,63}$") -}}
 
-base_classname:
+classname:
   when: "{{ advanced }}"
   type: str
   help: "classname base (eg. '{{ modid|capitalize }}' -> '{{ modid|capitalize }}Client.java')"
   default: "{{ modid|capitalize }}"
   validator: |
     {%- import "macros/validators.jinja" as validators -%}
-    {{- validators.not_empty(base_classname) -}}
-    {{- validators.java_identifier(base_classname) -}}
+    {{- validators.not_empty(classname) -}}
+    {{- validators.java_identifier(classname) -}}
 
 display_name:
   type: str
-  default: "{{ base_classname }}"
+  default: "{{ classname }}"
 
 description:
   type: str

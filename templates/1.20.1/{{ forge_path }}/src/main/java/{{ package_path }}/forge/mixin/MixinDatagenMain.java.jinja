@@ -1,6 +1,6 @@
 package {{ package }}.forge.mixin;
 
-import {{ package }}.{{ base_classname }};
+import {{ package }}.{{ classname }};
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinDatagenMain {
     @Inject(method = "main", at = @At("TAIL"), remap = false)
     private static void {{ modid }}$systemExitAfterDatagenFinishes(String[] strings, CallbackInfo ci) {
-        {{ base_classname }}.LOGGER.info("Terminating datagen.");
+        {{ classname }}.LOGGER.info("Terminating datagen.");
         System.exit(0);
     }
 }

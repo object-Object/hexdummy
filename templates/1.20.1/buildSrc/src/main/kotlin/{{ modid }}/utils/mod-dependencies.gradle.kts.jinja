@@ -6,7 +6,7 @@ plugins {
 
 // plugin config
 
-abstract class {{ base_classname }}ModDependenciesExtension(private val project: Project) {
+abstract class {{ classname }}ModDependenciesExtension(private val project: Project) {
     abstract val filesMatching: ListProperty<String>
     abstract val anyVersion: Property<String>
 
@@ -63,7 +63,7 @@ abstract class {{ base_classname }}ModDependenciesExtension(private val project:
     }
 }
 
-val extension = extensions.create<{{ base_classname }}ModDependenciesExtension>("{{ base_classname|lower }}ModDependencies")
+val extension = extensions.create<{{ classname }}ModDependenciesExtension>("{{ classname|lower }}ModDependencies")
 
 // build logic
 

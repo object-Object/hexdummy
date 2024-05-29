@@ -1,13 +1,13 @@
 package {{ package }}.fabric
 
-import {{ package }}.{{ base_classname }}Client
+import {{ package }}.{{ classname }}Client
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.EnvType.CLIENT
 import net.fabricmc.api.Environment
 
 @Environment(CLIENT)
-object Fabric{{ base_classname }}Client : ClientModInitializer {
+object Fabric{{ classname }}Client : ClientModInitializer {
     override fun onInitializeClient() {
-        {{ base_classname }}Client.init()
+        {{ classname }}Client.init()
     }
 }

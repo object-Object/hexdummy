@@ -3,8 +3,8 @@ book_id: "{{ modid }}:{{ book_id_path }}"
 default_branch: {{ default_branch }}
 github_repo: {{ github_repo }}
 gradle_mod_version_key: modVersion
-hexdoc_mod_plugin_classname: {{ base_classname }}ModPlugin
-hexdoc_plugin_classname: {{ base_classname }}Plugin
+hexdoc_mod_plugin_classname: {{ classname }}ModPlugin
+hexdoc_plugin_classname: {{ classname }}Plugin
 java_lang:
   ext: java
   src: java
@@ -16,4 +16,4 @@ pages_url: {{ homepage_url }}
 pattern_regex:
   regex: '(?P<is_per_world>register|registerPerWorld)\(HexPattern\.fromAngles\("(?P<signature>[qweasd]+)",\s*HexDir\.(?P<startdir>\w+)\),\s*"(?P<name>[^"]+)"?'
   per_world_value: registerPerWorld
-pattern_registry: registry/{{ base_classname }}Patterns.java
+pattern_registry: registry/{{ classname }}Patterns.java
