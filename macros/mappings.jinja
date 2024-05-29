@@ -22,7 +22,18 @@
 
 {% set ns = namespace() %}
 
+{#
+  {% from "macros/mappings.jinja" import import, ns with context -%}
+
+  {% set ServerPlayer = import(
+      mojmap="net.minecraft.server.level.ServerPlayer",
+      yarn="net.minecraft.server.network.ServerPlayerEntity",
+  ) %}{{ ns.import }};
+
+  {{ ServerPlayer }} player = ...;
+#}
 {% macro import(mojmap, yarn) -%}
-  {%- set ns.import = mappings(mojmap=mojmap, yarn=yarn).split(".")|last -%}
-  import {{ mappings(mojmap, yarn) }}
+  {%- set value = mappings(mojmap=mojmap, yarn=yarn) -%}
+  {%- set ns.import = "import "~value -%}
+  {{ value.split(".")|last }}
 {%- endmacro %}
