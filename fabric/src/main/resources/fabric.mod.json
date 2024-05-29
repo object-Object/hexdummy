@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "hexdummy",
+  "version": "${modVersion}",
+  "name": "Hex Dummy",
+  "description": "Hex Dummy addon for Hex Casting",
+  "authors": [
+    "artynova"
+  ],
+  "contact": {
+    "homepage": "https://artynova.github.io/hexdummy",
+    "sources": "https://github.com/artynova/hexdummy"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [{
+      "adapter": "kotlin",
+      "value": "io.github.artynova.hexdummy.fabric.FabricHexDummy"
+    }],
+    "client": [{
+      "adapter": "kotlin",
+      "value": "io.github.artynova.hexdummy.fabric.FabricHexDummyClient"
+    }],
+    "modmenu": [{
+      "adapter": "kotlin",
+      "value": "io.github.artynova.hexdummy.fabric.FabricHexDummyModMenu"
+    }]
+  },
+  "mixins": [
+    "hexdummy-common.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "${versions.minecraft}",
+    "fabricloader": ">=${versions.fabric_loader}",
+    "fabric-api": ">=${versions.fabric_api}",
+    "fabric-language-kotlin": ">=${versions.kotlin_fabric}",
+    "architectury": ">=${versions.architectury}",
+    "hexcasting": ">=${versions.hexcasting}",
+    "cloth-config": ">=${versions.clothConfig}"
+  },
+  "suggests": {
+    "modmenu": ">=${versions.modMenu}"
+  }
+}

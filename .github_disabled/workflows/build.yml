@@ -1,0 +1,74 @@
+
+name: Build
+
+on:
+  push:
+    branches: "*"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  # add more branches here to enable deploying the web book to Pages from those branches
+  # eg. '["main", "1.19"]'
+  MAIN_BRANCHES: '["main"]'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      is-main-branch: |-
+        ${{
+          github.event_name != 'pull_request'
+          && contains(fromJson(env.MAIN_BRANCHES), env.BRANCH_NAME)
+        }}
+    steps:
+      - name: Print message so the workflow isn't invalid
+        run: 'echo "Hello World!"'
+
+  build-mod:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v3
+
+      - name: Build mod
+        run: ./gradlew build
+
+      # literally no idea why the mkdir is needed, but the workflow fails without it :/
+      - name: Check if datagen needs to be run
+        timeout-minutes: 3
+        run: |
+          mkdir -p /home/runner/.gradle/caches/fabric-loom/assets
+          ./gradlew runAllDatagen
+          git add --intent-to-add .
+          git diff --name-only --exit-code -- ":!:*/src/generated/resources/.cache/*"
+
+      - name: Upload prerelease artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mod-prerelease
+          path: build/githubArtifacts/
+          if-no-files-found: error
+
+  build-docs:
+    needs: setup
+    uses: hexdoc-dev/hexdoc/.github/workflows/hexdoc.yml@v1!0.1.dev
+    permissions:
+      contents: write
+      pages: read
+    secrets:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      python-version: 3.11
+      deploy-pages: ${{ needs.setup.outputs.is-main-branch == 'true' }}
+      release: false
+
