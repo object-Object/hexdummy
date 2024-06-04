@@ -39,9 +39,7 @@ repositories {
             includeGroup("libs")
         }
         forRepository {
-            flatDir {
-                dir(rootProject.file("libs"))
-            }
+            flatDir { dir(rootProject.file("libs")) }
         }
     }
 }
