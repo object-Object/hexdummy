@@ -40,7 +40,7 @@ jobs:
           name: ${{ matrix.mappings }}
           path: .ctt/${{ matrix.mappings }}/
   
-  upload:
+  deploy:
     needs: build
     runs-on: ubuntu-latest
     strategy:
@@ -85,5 +85,6 @@ jobs:
         run: |
           SHORT_SHA=`echo ${{ github.sha }} | cut -c1-10`
           git add .
-          git commit -m "Deploy ${{ env.TARGET_BRANCH }} from ${SHORT_SHA}"
-          git push
+          if git commit -m "Deploy ${{ env.TARGET_BRANCH }} from ${SHORT_SHA}"; then
+            git push
+          fi
