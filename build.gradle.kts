@@ -1,5 +1,5 @@
 plugins {
-    id("hexdummy.kotlin")
+    id("hexdummy.java")
 }
 
 architectury {
