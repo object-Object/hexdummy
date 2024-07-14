@@ -22,6 +22,6 @@ package_slug: hexdoc_hexdummy
 package_src: doc/src/hexdoc_hexdummy
 pages_url: https://artynova.github.io/hexdummy
 pattern_regex:
-    per_world_value: registerPerWorld
-    regex: (?P<is_per_world>register|registerPerWorld)\(HexPattern\.fromAngles\("(?P<signature>[qweasd]+)",\s*HexDir\.(?P<startdir>\w+)\),\s*"(?P<name>[^"]+)"?
+    per_world_value: 'true'
+    regex: make\(\s*"(?P<name>[a-zA-Z0-9_\/]+)",\s*(?:new )?(?:ActionRegistryEntry|OperationAction)\(\s*HexPattern\.fromAngles\(\s*"(?P<signature>[aqweds]+)",\s*HexDir.(?P<startdir>\w+)\)
 pattern_registry: registry/HexDummyPatterns.java

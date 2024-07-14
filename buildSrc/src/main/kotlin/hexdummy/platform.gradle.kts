@@ -76,14 +76,6 @@ tasks {
     }
 }
 
-components {
-    named<AdhocComponentWithVariants>("java") {
-        withVariantsFromConfiguration(configurations.shadowRuntimeElements.get()) {
-            skip()
-        }
-    }
-}
-
 publishMods {
     val isCI = (System.getenv("CI") ?: "").isNotBlank()
     val isDryRun = (System.getenv("DRY_RUN") ?: "").isNotBlank()
@@ -116,7 +108,7 @@ publishMods {
     }
 }
 
-const val SECTION_HEADER_PREFIX = "## "
+val SECTION_HEADER_PREFIX = "## "
 
 fun getLatestChangelog() = rootProject.file("CHANGELOG.md").useLines { lines ->
     lines.dropWhile { !it.startsWith(SECTION_HEADER_PREFIX) }

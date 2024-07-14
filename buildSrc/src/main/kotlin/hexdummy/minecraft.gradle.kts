@@ -2,8 +2,10 @@
 
 package hexdummy
 
+import kotlin.io.path.div
+
 plugins {
-    id("hexdummy.kotlin")
+    id("hexdummy.java")
     id("hexdummy.utils.json5")
 
     `maven-publish`
