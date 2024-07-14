@@ -31,19 +31,19 @@ abstract class {{ classname }}ModDependenciesExtension(private val project: Proj
 
     fun requires(slug: String) = requires(slug, slug)
 
-    fun requires(curseforgeSlug: String, modrinthSlug: String) = project.run {
+    fun requires(curseforge: String, modrinth: String) = project.run {
         publishMods {
-            curseforge { requires(curseforgeSlug) }
-            modrinth { requires(modrinthSlug) }
+            curseforge { requires(curseforge) }
+            modrinth { requires(modrinth) }
         }
     }
 
     fun optional(slug: String) = optional(slug, slug)
 
-    fun optional(curseforgeSlug: String, modrinthSlug: String) = project.run {
+    fun optional(curseforge: String, modrinth: String) = project.run {
         publishMods {
-            curseforge { optional(curseforgeSlug) }
-            modrinth { optional(modrinthSlug) }
+            curseforge { optional(curseforge) }
+            modrinth { optional(modrinth) }
         }
     }
 
