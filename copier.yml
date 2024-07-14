@@ -101,10 +101,6 @@ minecraft_version:
 
 # static/computed values
 
-kotlin_plugin:
-  when: false
-  default: "{{ 'kotlin' if kotlin else 'java' }}"
-
 common_path:
   when: false
   default: "{{ 'Common' if capitalize_platforms else 'common' }}"
