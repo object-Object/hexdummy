@@ -2,7 +2,8 @@ name: Run tests
 
 on:
   push:
-    branches: "*"
+    branches:  # FIXME: reenable for v2 when ready
+      - v1
   pull_request:
 
 jobs:
