@@ -33,7 +33,7 @@ dependencies {
         officialMojangMappings()
         parchment(libs.parchment)
     })",
-        yarn="mappings(libs.yarn)",
+        yarn='mappings(variantOf(libs.yarn) { classifier("v2") })',
     ) }}
 
     annotationProcessor(libs.bundles.asm)
