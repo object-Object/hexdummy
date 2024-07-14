@@ -25,7 +25,7 @@ loom {
 dependencies {
     minecraft(libs.minecraft)
 
-    mappings(libs.yarn)
+    mappings(variantOf(libs.yarn) { classifier("v2") })
 
     annotationProcessor(libs.bundles.asm)
 }
