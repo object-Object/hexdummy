@@ -116,7 +116,7 @@ publishMods {
     }
 }
 
-const val SECTION_HEADER_PREFIX = "## "
+val SECTION_HEADER_PREFIX = "## "
 
 fun getLatestChangelog() = rootProject.file("CHANGELOG.md").useLines { lines ->
     lines.dropWhile { !it.startsWith(SECTION_HEADER_PREFIX) }
