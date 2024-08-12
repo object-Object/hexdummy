@@ -1,3 +1,5 @@
+{% from "macros/mappings.jinja" import mappings with context -%}
+
 plugins {
     id("{{ modid }}.minecraft")
 }
@@ -14,7 +16,7 @@ dependencies {
     modImplementation(libs.fabric.loader)
     modApi(libs.architectury)
 
-    modApi(libs.hexcasting.common)
+    modApi(libs.hexcasting.{{ mappings(mojmap="common", yarn="fabric") }})
 
     modApi(libs.clothConfig.common)
 
