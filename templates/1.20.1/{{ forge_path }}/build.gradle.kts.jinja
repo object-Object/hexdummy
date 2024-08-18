@@ -32,7 +32,7 @@ loom {
     }
 }
 
-{{ modid }}ModDependencies {
+{{ classname|lower }}ModDependencies {
     // expand versions in mods.toml
     filesMatching.add("META-INF/mods.toml")
 
