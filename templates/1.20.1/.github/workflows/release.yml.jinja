@@ -33,7 +33,7 @@ permissions:
 
 jobs:
   build-docs:
-    uses: hexdoc-dev/hexdoc/.github/workflows/hexdoc.yml@v1!0.1.dev
+    uses: hexdoc-dev/actions/.github/workflows/hexdoc.yml@v1
     permissions:
       contents: write
       pages: read
@@ -104,8 +104,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      # hexdoc workflow uses v3, so we can't use v4 here
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: hexdoc-build
           path: dist
